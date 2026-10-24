@@ -1,0 +1,35 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: reviewinsight-redis
+    ports:
+      - "6379:6379"          # 映射到宿主机，方便你本地调试
+    volumes:
+      - redis_data:/data     # 持久化 Redis 数据
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "PING"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./temp_uploads:/app/temp_uploads
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis      # 关键：容器内通过服务名访问 Redis
+      - REDIS_PORT=6379
+    depends_on:
+      redis:
+        condition: service_healthy  # 等 Redis 健康后再启动 API
+    restart: unless-stopped
+
+volumes:
+  redis_data:
