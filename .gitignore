@@ -12,7 +12,7 @@ build/
 *.whl
 test.py
 
-# 虚拟环境（如果放在项目里）
+# 虚拟环境
 .venv/
 venv/
 env/
@@ -24,13 +24,15 @@ ENV/
 *.iml
 *.xml
 
-# 环境变量（关键！包含API Key）
+# 环境变量
 .env
 
 # 项目生成文件
-chroma_db/          # 向量数据库（较大，无需提交）
-temp_uploads/       # 临时上传文件
+chroma_db/
+temp_uploads/
+processed_files.json
 *.log
+build.log
 
 # 操作系统
 .DS_Store
