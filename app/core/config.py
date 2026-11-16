@@ -1,7 +1,13 @@
-import os
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
+    # 读取项目根目录的 .env，环境变量名不区分大小写
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+    )
+
     deepseek_api_key: str
     chroma_persist_dir: str = "./chroma_db"
     db_path: str = "./data/reviews.db"
@@ -19,11 +25,6 @@ class Settings(BaseSettings):
     # 只留最近 N 轮问题摘要，过期自动消失
     session_max_turns: int = 3
     session_ttl_seconds: int = 1800
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = False   # 允许环境变量大小写混用
 
 # 单例模式：全局只加载一次
 settings = Settings()
