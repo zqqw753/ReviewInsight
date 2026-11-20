@@ -34,6 +34,11 @@ processed_files.json
 *.log
 build.log
 
+# 测试与覆盖率缓存
+.pytest_cache/
+.coverage
+htmlcov/
+
 # 操作系统
 .DS_Store
 Thumbs.db
